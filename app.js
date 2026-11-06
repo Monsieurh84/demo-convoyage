@@ -14,6 +14,7 @@
   const params = new URLSearchParams(location.search);
   const SOCIETE = params.get('nom') || 'Convoyage Pro';
   if (params.get('pour')) $('#pour').textContent = params.get('pour');
+  $$('a.ext').forEach(a => { a.href = 'site.html' + location.search; });
 
   const IC = {
     dash: '<rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/>',
@@ -120,12 +121,20 @@
   try { D = JSON.parse(localStorage.getItem('convoy_demo_v1') || 'null'); } catch (e) { D = null; }
   if (!D || D.v !== 1 || !D.missions.some(m => m.date === ymd())) D = seed();
   const save = () => { try { localStorage.setItem('convoy_demo_v1', JSON.stringify(D)); } catch (e) { toast('Mémoire du navigateur pleine : réinitialise la démo.'); } };
+  function importerSite() {
+    let q = []; try { q = JSON.parse(localStorage.getItem('convoy_demo_cmds') || '[]'); } catch (e) { }
+    let n = 0;
+    q.forEach(c => { if (D.missions.some(m => m.id === c.id)) return; D.missions.push(Object.assign({ convoyeur: null, statut: 'a_planifier', progress: 0, pvA: null, pvB: null, frais: [], alerte: '', note: '' }, c, { historique: [{ at: c.creeLe, txt: 'Commande passée sur le site web (' + c.web.nom + ')' }] })); n++; });
+    try { localStorage.removeItem('convoy_demo_cmds'); } catch (e) { }
+    return n;
+  }
+  const nbImport = importerSite();
   save();
   $('#reset').onclick = () => { try { localStorage.removeItem('convoy_demo_v1'); } catch (x) { } D = seed(); save(); route(); toast('Démo réinitialisée'); };
-  window.addEventListener('storage', e => { if (e.key === 'convoy_demo_v1') { try { D = JSON.parse(e.newValue); render(); } catch (x) { } } });
+  window.addEventListener('storage', e => { if (e.key === 'convoy_demo_cmds' && e.newValue) { const n = importerSite(); if (n) { save(); render(); toast('🌐 Nouvelle commande reçue depuis le site web'); } return; } if (e.key === 'convoy_demo_v1') { try { D = JSON.parse(e.newValue); render(); } catch (x) { } } });
 
   const M = id => D.missions.find(m => m.id === id);
-  const CL = id => CLIENTS.find(c => c.id === id) || {};
+  const CL = id => CLIENTS.find(c => c.id === id) || (id && id.startsWith('web:') ? { id, nom: id.slice(4), type: 'Client web', contact: id.slice(4), tel: '', couleur: '#0FA3B1', forfait: 60, km: 1.1 } : {});
   const CV = id => CONVOYEURS.find(c => c.id === id);
   const av = (c, sz = 32) => c ? `<span class="av" style="background:${c.couleur};width:${sz}px;height:${sz}px">${c.nom.split(' ').map(x => x[0]).join('')}</span>` : `<span class="av" style="background:#C3CCD8;width:${sz}px;height:${sz}px">?</span>`;
   const tagSt = s => `<span class="tag st-${s === 'en_route' ? 'en_route' : s}"><i></i>${STATUTS[s]}</span>`;
@@ -185,7 +194,7 @@
       <div class="grid g2"><div class="card" style="padding:0;overflow:hidden"><div class="card-h" style="padding:16px 18px 0"><h3>Véhicules en mouvement</h3><a class="btn gh sm" href="#/carte">Plein écran</a></div><div id="mapDash" class="map" style="height:360px;border:0;border-radius:0;margin-top:12px"></div></div>
         <div class="grid" style="align-content:start">
           <div class="card"><div class="card-h"><h3>À traiter</h3></div>
-            ${D.missions.filter(m => m.statut === 'a_planifier').slice(0, 4).map(m => `<div class="row" style="padding:9px 0;border-bottom:1px solid var(--ligne);cursor:pointer" data-a="ouvrir" data-id="${m.id}"><span class="tag st-a_planifier">Sans convoyeur</span><div class="grow small"><b>${esc(m.a.ville)} → ${esc(m.b.ville)}</b><div class="muted">${jourFr(m.date)} ${m.heure}</div></div></div>`).join('') || '<p class="muted small">Tout est planifié ✓</p>'}
+            ${D.missions.filter(m => m.statut === 'a_planifier').sort((a, b) => (b.web ? 1 : 0) - (a.web ? 1 : 0)).slice(0, 5).map(m => `<div class="row" style="padding:9px 0;border-bottom:1px solid var(--ligne);cursor:pointer" data-a="ouvrir" data-id="${m.id}"><span class="tag ${m.web ? 'web' : 'st-a_planifier'}">${m.web ? '🌐 Commande web' : 'Sans convoyeur'}</span><div class="grow small"><b>${esc(m.a.ville)} → ${esc(m.b.ville)}</b><div class="muted">${jourFr(m.date)} ${m.heure}</div></div></div>`).join('') || '<p class="muted small">Tout est planifié ✓</p>'}
             ${alertes.map(m => `<div class="row" style="padding:9px 0;cursor:pointer" data-a="ouvrir" data-id="${m.id}"><span class="tag alerte">${ic('alert', 13)} Alerte</span><div class="grow small">${esc(m.alerte)}</div></div>`).join('')}</div>
           <div class="card"><div class="card-h"><h3>Convoyeurs aujourd’hui</h3></div>${CONVOYEURS.map(c => { const ms = auj.filter(m => m.convoyeur === c.id), cur = ms.find(m => ['en_route', 'pris_en_charge', 'en_convoi'].includes(m.statut)); return `<div class="row" style="padding:6px 0">${av(c, 30)}<div class="grow small"><b>${c.nom}</b><div class="muted">${cur ? STATUTS[cur.statut] + ' · ' + cur.a.ville + ' → ' + cur.b.ville : ms.length ? ms.length + ' mission(s) prévue(s)' : 'Disponible'}</div></div>${cur ? '<span class="tag st-en_convoi"><i></i>Actif</span>' : ''}</div>`; }).join('')}</div></div></div>
       <div class="card" style="margin-top:14px"><div class="card-h"><h3>Missions du jour</h3><a class="btn gh sm" href="#/missions">Tout voir</a></div>${tableMissions(auj)}</div>`;
@@ -193,7 +202,7 @@
   function tableMissions(l) {
     if (!l.length) return '<p class="muted">Aucune mission.</p>';
     return `<div class="tw"><table><thead><tr><th>Réf.</th><th>Date</th><th>Trajet</th><th>Véhicule</th><th>Client</th><th>Convoyeur</th><th>Statut</th><th style="text-align:right">Prix HT</th></tr></thead><tbody>
-      ${l.map(m => `<tr data-a="ouvrir" data-id="${m.id}"><td><b>${m.id}</b>${m.type === 'Plateau' ? '<div class="small muted">Plateau</div>' : ''}</td><td class="small">${jourFr(m.date)}<br><b>${m.heure}</b></td><td>${trajet(m)}<div class="small muted">${m.km} km</div></td><td class="small"><b>${veh(m)}</b><div class="muted">${m.vehicule.immat}</div></td><td class="small">${esc(CL(m.client).nom)}</td><td>${m.convoyeur ? `<div class="row" style="gap:7px">${av(CV(m.convoyeur), 26)}<span class="small">${CV(m.convoyeur).nom}</span></div>` : '<span class="tag st-a_planifier">À assigner</span>'}</td><td>${tagSt(m.statut)}${m.alerte ? ` <span class="tag alerte">${ic('alert', 12)}</span>` : ''}</td><td style="text-align:right;font-weight:700">${eur(m.prix)}</td></tr>`).join('')}</tbody></table></div>`;
+      ${l.map(m => `<tr data-a="ouvrir" data-id="${m.id}"><td><b>${m.id}</b>${m.type === 'Plateau' ? '<div class="small muted">Plateau</div>' : ''}${m.web ? '<div><span class="tag web">🌐 Site web</span></div>' : ''}</td><td class="small">${jourFr(m.date)}<br><b>${m.heure}</b></td><td>${trajet(m)}<div class="small muted">${m.km} km</div></td><td class="small"><b>${veh(m)}</b><div class="muted">${m.vehicule.immat}</div></td><td class="small">${esc(CL(m.client).nom)}</td><td>${m.convoyeur ? `<div class="row" style="gap:7px">${av(CV(m.convoyeur), 26)}<span class="small">${CV(m.convoyeur).nom}</span></div>` : '<span class="tag st-a_planifier">À assigner</span>'}</td><td>${tagSt(m.statut)}${m.alerte ? ` <span class="tag alerte">${ic('alert', 12)}</span>` : ''}</td><td style="text-align:right;font-weight:700">${eur(m.prix)}</td></tr>`).join('')}</tbody></table></div>`;
   }
   let filtre = 'actives', recherche = '';
   VUES.missions = () => {
@@ -287,6 +296,7 @@
     panneau(`<div class="ph"><div class="grow"><div class="small muted">${m.id} · ${m.type}</div><h2>${esc(m.a.ville)} → ${esc(m.b.ville)}</h2></div>${tagSt(m.statut)}<button class="x" data-a="fermer">${ic('x')}</button></div>
       <div class="pc">
         ${m.alerte ? `<div class="card" style="background:var(--rouge2);border-color:#F6C7C3"><b style="color:var(--rouge)">${ic('alert', 16)} ${esc(m.alerte)}</b><div class="small" style="margin-top:4px">Photos et PV horodatés disponibles pour le litige.</div></div>` : ''}
+        ${m.web ? `<div class="card" style="background:#E6F7F8;border-color:#BFE7EA"><b>🌐 Commande passée sur le site</b><div class="small" style="margin-top:4px">${esc(m.web.nom)} · ${esc(m.web.tel)} · ${esc(m.web.email)}${m.web.message ? '<br>« ' + esc(m.web.message) + ' »' : ''}</div><div class="small muted" style="margin-top:4px">Le client a reçu son lien de suivi par e-mail. Il ne reste qu'à assigner un convoyeur.</div></div>` : ''}
         <div class="card"><dl class="kv"><dt>Client</dt><dd>${esc(c.nom)}</dd><dt>Véhicule</dt><dd>${veh(m)} · ${m.vehicule.energie}</dd><dt>Immatriculation</dt><dd>${m.vehicule.immat}</dd><dt>Date</dt><dd>${cap(jourFr(m.date, { weekday: 'long', day: 'numeric', month: 'long' }))} · ${m.heure}</dd><dt>Distance</dt><dd>${m.km} km · ≈ ${Math.floor(dureeH(m.km))} h ${pad(Math.round(dureeH(m.km) % 1 * 60))}</dd><dt>Prix HT</dt><dd style="color:var(--orange);font-size:17px">${eur(m.prix)}</dd>${frais ? `<dt>Frais convoyeur</dt><dd>${eur(frais)}</dd>` : ''}</dl></div>
         <div class="card"><div class="trajet" style="gap:10px;font-size:14.5px"><div class="a"><div><b>${esc(m.a.ville)}</b> · ${esc(m.a.adresse)}<div class="small muted">${esc(m.a.contact)} · ${m.a.tel}</div></div></div><div class="b"><div><b>${esc(m.b.ville)}</b> · ${esc(m.b.adresse)}<div class="small muted">${esc(m.b.contact)} · ${m.b.tel}</div></div></div></div><div id="mapM" class="map sm" style="margin-top:12px"></div></div>
         <div class="card"><div class="card-h"><h3>Convoyeur</h3></div>
@@ -513,4 +523,5 @@
   }, 8000);
 
   route();
+  if (nbImport) setTimeout(() => toast('🌐 ' + nbImport + ' nouvelle(s) commande(s) reçue(s) depuis le site web'), 400);
 })();
