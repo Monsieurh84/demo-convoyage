@@ -133,6 +133,21 @@ footer{color:var(--doux);font-size:13px;text-align:center;padding-block:10px 30p
         <label><input type="radio" name="conv" value="16 à 50">16 à 50</label>
         <label><input type="radio" name="conv" value="Plus de 50">Plus de 50</label></div></div>
 
+      <div class="q" data-q="Volume"><p>Combien de commandes par mois environ ?</p><div class="opts">
+        <label><input type="radio" name="vol" value="Moins de 30">Moins de 30</label>
+        <label><input type="radio" name="vol" value="30 à 100">30 à 100</label>
+        <label><input type="radio" name="vol" value="100 à 300">100 à 300</label>
+        <label><input type="radio" name="vol" value="Plus de 300">Plus de 300</label></div></div>
+
+      <div class="q" data-q="Billets et hébergement"><p>Les billets et l’hébergement des convoyeurs</p><div class="opts">
+        <label><input type="radio" name="bil" value="Réservés par le bureau, puis envoyés dans l’app">Le bureau réserve, l’app les envoie</label>
+        <label><input type="radio" name="bil" value="Réservation directement depuis l’app">On réserve directement depuis l’app</label>
+        <label><input type="radio" name="bil" value="Le convoyeur réserve et se fait rembourser">Le convoyeur réserve, puis remboursé</label></div></div>
+
+      <div class="q" data-q="Suivi GPS"><p>Suivre la position des convoyeurs en mission ?</p><div class="opts">
+        <label><input type="radio" name="gps" value="Oui, en direct">Oui, en direct</label>
+        <label><input type="radio" name="gps" value="Seulement les étapes (départ, arrivée)">Seulement départ et arrivée</label>
+        <label><input type="radio" name="gps" value="Non">Non</label></div></div>
       <div class="q" data-q="Dossier convoyeur"><p>Que doit-on envoyer au convoyeur dans l’app ?</p><div class="opts">
         <label><input type="checkbox" name="doss" value="Ordre de mission" checked>Ordre de mission</label>
         <label><input type="checkbox" name="doss" value="Billets de train / bus">Billets de train / bus</label>
@@ -149,6 +164,17 @@ footer{color:var(--doux);font-size:13px;text-align:center;padding-block:10px 30p
         <label><input type="checkbox" name="env" value="Conteneurs complets">Conteneurs complets</label></div>
         <input class="input" name="pays" placeholder="Pays de destination les plus fréquents (ex. Cameroun, Côte d’Ivoire…)"></div>
 
+      <div class="q" data-q="Logistique export"><p>Comment partent vos envois ?</p><div class="opts">
+        <label><input type="checkbox" name="log" value="Via un transitaire">Via un transitaire</label>
+        <label><input type="checkbox" name="log" value="En direct avec la compagnie maritime">En direct avec la compagnie maritime</label>
+        <label><input type="checkbox" name="log" value="Groupage en conteneur">Groupage en conteneur</label>
+        <label><input type="checkbox" name="log" value="Suivi du conteneur à afficher au client">Afficher le suivi du conteneur au client</label></div>
+        <input class="input" name="ports" placeholder="Ports ou entrepôts de départ (ex. Marseille, Anvers, Le Havre…)"></div>
+
+      <div class="q" data-q="Devises"><p>Les devises à gérer</p><div class="opts">
+        <label><input type="checkbox" name="dev" value="Euro" checked>Euro</label>
+        <label><input type="checkbox" name="dev" value="Franc CFA (XAF / XOF)">Franc CFA (XAF / XOF)</label>
+        <label><input type="checkbox" name="dev" value="Autre devise">Autre</label></div></div>
       <div class="q" data-q="Documents de douane"><p>Les documents à générer automatiquement</p><div class="opts">
         <label><input type="checkbox" name="doc" value="Facture commerciale">Facture commerciale</label>
         <label><input type="checkbox" name="doc" value="Liste de colisage">Liste de colisage</label>
@@ -187,6 +213,24 @@ footer{color:var(--doux);font-size:13px;text-align:center;padding-block:10px 30p
         <label><input type="radio" name="del" value="3 à 6 mois">3 à 6 mois</label>
         <label><input type="radio" name="del" value="Pas de date fixe">Pas de date fixe</label></div></div>
 
+      <div class="q" data-q="Données existantes"><p>Des données à reprendre dans la nouvelle application ?</p><div class="opts">
+        <label><input type="checkbox" name="dat" value="Fichier clients">Fichier clients</label>
+        <label><input type="checkbox" name="dat" value="Historique des commandes">Historique des commandes</label>
+        <label><input type="checkbox" name="dat" value="Factures">Factures</label>
+        <label><input type="checkbox" name="dat" value="Rien, on part de zéro">Rien, on part de zéro</label></div></div>
+
+      <div class="q" data-q="Éléments à fournir"><p>Ce que vous pouvez nous fournir</p><div class="opts">
+        <label><input type="checkbox" name="four" value="Logo en haute qualité">Logo en haute qualité</label>
+        <label><input type="checkbox" name="four" value="Charte graphique (couleurs, polices)">Charte graphique</label>
+        <label><input type="checkbox" name="four" value="Modèles de factures / documents actuels">Modèles de documents actuels</label>
+        <label><input type="checkbox" name="four" value="Comptes Apple et Google développeur déjà créés">Comptes Apple / Google déjà créés</label></div></div>
+
+      <div class="q" data-q="Validation"><p>Qui valide les étapes du projet ?</p><div class="opts">
+        <label><input type="radio" name="val" value="Moi seul">Moi seul</label>
+        <label><input type="radio" name="val" value="Moi et un associé">Moi et un associé</label>
+        <label><input type="radio" name="val" value="Toute l’équipe">L’équipe</label></div>
+        <input class="input" name="valqui" placeholder="Nom(s) et rôle(s) (facultatif)"></div>
+
       <div class="q" data-q="Remarque"><p>Quelque chose à ajouter ?</p><textarea class="input" name="rem" rows="3" placeholder="Facultatif"></textarea></div>
     </form>
   </section>
@@ -197,7 +241,7 @@ footer{color:var(--doux);font-size:13px;text-align:center;padding-block:10px 30p
   </section>
 </main>
 <footer>Les Monsieurs by Monsieur.H · Hatim · 06 52 04 17 25</footer>
-<div class="avance"><div class="wrap"><span id="nb">0 / 13 réponses</span><div class="barre"><i id="bar"></i></div></div></div>
+<div class="avance"><div class="wrap"><span id="nb">0 / 21 réponses</span><div class="barre"><i id="bar"></i></div></div></div>
 
 <script>
 (function () {
