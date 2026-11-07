@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B2545">
+<title>Axis Import · Cadrage du projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Document de cadrage : une colonne lisible sur téléphone, bleu marine Axis Import, cases à cocher larges */
+:root{
+  --marine:#0B2545;--marine2:#13315C;--ciel:#E8EEF6;--fond:#F5F7FA;--blanc:#fff;--ligne:#DFE5EE;--texte:#13233A;--doux:#5D6B80;
+  --or:#E0A526;--or2:#FDF4E1;--vert:#1E9E6A;
+  --f-t:'Manrope',system-ui,sans-serif;--f-b:'Inter',system-ui,-apple-system,sans-serif
+}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fond);color:var(--texte);font:400 16px/1.55 var(--f-b);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-t);margin:0;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+header{background:var(--marine);color:#fff;padding-top:calc(34px + env(safe-area-inset-top,0px));padding-bottom:38px}
+.eyebrow{font:700 12px var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:var(--or)}
+header h1{font-size:clamp(28px,6vw,40px);font-weight:800;margin-top:10px}
+header p{color:#BFCBDC;margin-top:10px;max-width:36em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px;font-size:14px;color:#BFCBDC}.meta b{color:#fff;font-weight:600}
+main{padding-block:28px 40px;display:flex;flex-direction:column;gap:22px}
+.bloc{background:var(--blanc);border:1px solid var(--ligne);border-radius:18px;padding:22px}
+.bloc h2{font-size:21px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.num{flex:none;width:30px;height:30px;border-radius:9px;background:var(--marine);color:#fff;font:800 15px var(--f-t);display:grid;place-items:center}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.carte{background:var(--fond);border-radius:14px;padding:16px}
+.carte h3{font-size:16px;margin-bottom:6px}.carte p,.carte li{color:var(--doux);font-size:14.5px}
+ul.l{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.espaces{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.espaces span{background:var(--ciel);color:var(--marine);border-radius:99px;padding:6px 12px;font-size:13.5px;font-weight:600}
+.cle{border-left:3px solid var(--or);background:var(--or2);border-radius:0 12px 12px 0;padding:12px 14px;font-size:14.5px;margin-top:14px}
+.q{padding:18px 0;border-top:1px solid var(--ligne)}.q:first-of-type{border-top:0;padding-top:4px}
+.q > p{font:700 16px var(--f-t);margin-bottom:10px}
+.q small{display:block;color:var(--doux);font:400 13.5px var(--f-b);margin-top:-6px;margin-bottom:10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--ligne);border-radius:12px;padding:11px 12px;cursor:pointer;font-size:15px;line-height:1.35;background:#fff;min-width:0}
+.opts input{flex:none;width:19px;height:19px;margin:1px 0 0;accent-color:var(--marine)}
+.opts label:has(input:checked){border-color:var(--marine);background:var(--ciel)}
+.input{width:100%;border:1.5px solid var(--ligne);border-radius:12px;padding:11px 12px;font:inherit;font-size:15px;color:var(--texte);background:#fff;margin-top:8px}
+.input:focus,.opts label:focus-within{outline:none;border-color:var(--marine);box-shadow:0 0 0 3px rgba(11,37,69,.15)}
+.fin{display:flex;flex-direction:column;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:14px;padding:16px;font:700 16px var(--f-t);cursor:pointer;text-decoration:none}
+.btn.wa{background:#1FA855;color:#fff}.btn.gh{background:transparent;color:var(--marine);border:1.5px solid var(--marine)}
+.btn svg{width:20px;height:20px}
+.avance{position:sticky;bottom:0;background:rgba(245,247,250,.94);backdrop-filter:blur(8px);border-top:1px solid var(--ligne);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));font-size:14px;color:var(--doux);z-index:5}
+.avance .wrap{display:flex;align-items:center;gap:12px}.barre{flex:1;height:6px;background:var(--ligne);border-radius:9px;overflow:hidden}.barre i{display:block;height:100%;width:0;background:var(--marine);transition:width .25s}
+footer{color:var(--doux);font-size:13px;text-align:center;padding-block:10px 30px}
+.toast{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--marine);color:#fff;padding:12px 18px;border-radius:12px;z-index:9;font-weight:500;max-width:92vw}
+@media (max-width:560px){.duo,.opts{grid-template-columns:1fr}.bloc{padding:18px}}
+@media (prefers-reduced-motion:reduce){.barre i{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="eyebrow">Axis Import · Projet digital</div>
+  <h1>Ce que nous avons compris de votre projet</h1>
+  <p>Un résumé en 2 minutes, puis quelques questions à cocher pour être sûrs de bien construire ce dont vous avez besoin.</p>
+  <div class="meta"><span>Pour <b>Ibrahim</b></span><span>Préparé par <b>Hatim</b> · Les Monsieurs</span><span id="dt"></span></div>
+</div></header>
+
+<main class="wrap">
+  <section class="bloc">
+    <h2><span class="num">1</span>Votre activité</h2>
+    <div class="duo">
+      <div class="carte"><h3>🚢 Import-export Europe → Afrique</h3><p>Palettes, fûts et colis volumineux par voie maritime, livraison à domicile en option, formalités douanières.</p></div>
+      <div class="carte"><h3>🚗 Convoyage de véhicules</h3><p>Transfert de véhicules par la route partout en Europe, pour les pros et les particuliers.</p></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2><span class="num">2</span>Deux applications, une même identité</h2>
+    <div class="duo">
+      <div class="carte"><h3>💼 L’application interne</h3><p>Sur ordinateur et mobile, un espace dédié à chaque métier :</p>
+        <div class="espaces"><span>Direction</span><span>Exploitation</span><span>Convoyeurs</span><span>Import-export</span><span>RH</span><span>Comptabilité</span><span>Secrétariat</span><span>Web design</span><span>Sponsoring</span></div></div>
+      <div class="carte"><h3>📱 L’application client</h3><p>Sur l’App Store et Google Play, pour les particuliers et les professionnels :</p>
+        <ul class="l" style="margin-top:6px"><li>Commander un convoyage ou un envoi</li><li>Voir le prix tout de suite</li><li>Suivre sa commande en direct</li><li>Retrouver factures, PV et documents de douane</li></ul></div>
+    </div>
+    <div class="cle"><b>Le lien entre les deux :</b> le compte client. Une commande passée dans l’app client arrive directement chez l’exploitation. Le site internet peut rester séparé.</div>
+  </section>
+
+  <section class="bloc">
+    <h2><span class="num">3</span>Ce qui doit être automatique</h2>
+    <ul class="l">
+      <li><b>Prix calculés tout seuls</b> à partir de vos tarifs (au km par type de véhicule, à l’unité pour les colis).</li>
+      <li><b>Documents de douane générés automatiquement</b> pour chaque envoi.</li>
+      <li><b>Dossier de mission complet pour le convoyeur</b> : ordre de mission, billets de train, hébergement, documents du véhicule.</li>
+      <li><b>Factures, PV photo et notifications</b> sans ressaisie.</li>
+    </ul>
+    <div class="cle"><b>Notre objectif :</b> que l’application devienne indispensable. Vos clients y trouvent tout, et vous pilotez toute l’entreprise depuis un seul endroit.</div>
+  </section>
+
+  <section class="bloc" id="questions">
+    <h2><span class="num">4</span>Quelques questions pour compléter</h2>
+    <form id="f">
+      <div class="q" data-q="Priorité"><p>Par quoi commencer ?</p><div class="opts">
+        <label><input type="radio" name="prio" value="App interne d’abord">App interne d’abord</label>
+        <label><input type="radio" name="prio" value="App client d’abord">App client d’abord</label>
+        <label><input type="radio" name="prio" value="Les deux en même temps">Les deux en même temps</label>
+        <label><input type="radio" name="prio" value="À définir ensemble">À définir ensemble</label></div></div>
+
+      <div class="q" data-q="App actuelle (app-axisimport.com)"><p>Votre application actuelle (app-axisimport.com)</p><div class="opts">
+        <label><input type="radio" name="app" value="La remplacer">On la remplace</label>
+        <label><input type="radio" name="app" value="La reprendre et l’améliorer">On la reprend et on l’améliore</label>
+        <label><input type="radio" name="app" value="La garder à côté">On la garde à côté</label>
+        <label><input type="radio" name="app" value="À voir ensemble">À voir ensemble</label></div></div>
+
+      <div class="q" data-q="Site internet"><p>Le site axisimport.fr</p><div class="opts">
+        <label><input type="radio" name="site" value="Garder tel quel">On le garde tel quel</label>
+        <label><input type="radio" name="site" value="Le refaire">On le refait</label>
+        <label><input type="radio" name="site" value="Ajouter seulement l’accès au compte client">On ajoute juste l’accès client</label></div></div>
+
+      <div class="q" data-q="Espaces à prévoir"><p>Les espaces internes à prévoir</p><small>Décochez ceux qui ne servent pas tout de suite.</small><div class="opts">
+        <label><input type="checkbox" name="esp" value="Direction" checked>Direction</label>
+        <label><input type="checkbox" name="esp" value="Exploitation" checked>Exploitation</label>
+        <label><input type="checkbox" name="esp" value="Convoyeurs" checked>Convoyeurs</label>
+        <label><input type="checkbox" name="esp" value="Import-export" checked>Import-export</label>
+        <label><input type="checkbox" name="esp" value="RH" checked>RH</label>
+        <label><input type="checkbox" name="esp" value="Comptabilité" checked>Comptabilité</label>
+        <label><input type="checkbox" name="esp" value="Secrétariat" checked>Secrétariat</label>
+        <label><input type="checkbox" name="esp" value="Web design" checked>Web design</label>
+        <label><input type="checkbox" name="esp" value="Sponsoring" checked>Sponsoring</label></div></div>
+
+      <div class="q" data-q="Taille de l’équipe"><p>Combien de convoyeurs utiliseront l’application ?</p><div class="opts">
+        <label><input type="radio" name="conv" value="1 à 5">1 à 5</label>
+        <label><input type="radio" name="conv" value="6 à 15">6 à 15</label>
+        <label><input type="radio" name="conv" value="16 à 50">16 à 50</label>
+        <label><input type="radio" name="conv" value="Plus de 50">Plus de 50</label></div></div>
+
+      <div class="q" data-q="Dossier convoyeur"><p>Que doit-on envoyer au convoyeur dans l’app ?</p><div class="opts">
+        <label><input type="checkbox" name="doss" value="Ordre de mission" checked>Ordre de mission</label>
+        <label><input type="checkbox" name="doss" value="Billets de train / bus">Billets de train / bus</label>
+        <label><input type="checkbox" name="doss" value="Billets d’avion">Billets d’avion</label>
+        <label><input type="checkbox" name="doss" value="Hébergement">Hébergement</label>
+        <label><input type="checkbox" name="doss" value="Documents du véhicule">Documents du véhicule</label>
+        <label><input type="checkbox" name="doss" value="Avance de frais">Avance de frais</label></div></div>
+
+      <div class="q" data-q="Envois import-export"><p>Ce que vous expédiez vers l’Afrique</p><div class="opts">
+        <label><input type="checkbox" name="env" value="Palettes">Palettes</label>
+        <label><input type="checkbox" name="env" value="Fûts / barils">Fûts / barils</label>
+        <label><input type="checkbox" name="env" value="Colis au m³">Colis au m³</label>
+        <label><input type="checkbox" name="env" value="Véhicules">Véhicules</label>
+        <label><input type="checkbox" name="env" value="Conteneurs complets">Conteneurs complets</label></div>
+        <input class="input" name="pays" placeholder="Pays de destination les plus fréquents (ex. Cameroun, Côte d’Ivoire…)"></div>
+
+      <div class="q" data-q="Documents de douane"><p>Les documents à générer automatiquement</p><div class="opts">
+        <label><input type="checkbox" name="doc" value="Facture commerciale">Facture commerciale</label>
+        <label><input type="checkbox" name="doc" value="Liste de colisage">Liste de colisage</label>
+        <label><input type="checkbox" name="doc" value="Connaissement (BL)">Connaissement (BL)</label>
+        <label><input type="checkbox" name="doc" value="Déclaration d’export">Déclaration d’export</label>
+        <label><input type="checkbox" name="doc" value="Certificat d’origine">Certificat d’origine</label>
+        <label><input type="checkbox" name="doc" value="Bordereau de suivi (BSC / ECTN)">Bordereau de suivi (BSC / ECTN)</label>
+        <label><input type="checkbox" name="doc" value="Je ne sais pas, à voir avec mon transitaire">À voir avec mon transitaire</label></div></div>
+
+      <div class="q" data-q="Tarifs"><p>Vos tarifs</p><small>Votre site affiche 0,55 €, 0,65 € et 0,75 €/km selon les pages.</small><div class="opts">
+        <label><input type="radio" name="tarif" value="Reprendre la grille du site (citadine 0,65 €/km…)">On reprend la grille du site</label>
+        <label><input type="radio" name="tarif" value="Je vous envoie une grille à jour">J’envoie une grille à jour</label>
+        <label><input type="radio" name="tarif" value="Tarifs différents pros / particuliers">Tarifs différents pros / particuliers</label></div></div>
+
+      <div class="q" data-q="Paiement dans l’app client"><p>Paiement dans l’application client</p><div class="opts">
+        <label><input type="checkbox" name="pay" value="Carte bancaire">Carte bancaire</label>
+        <label><input type="checkbox" name="pay" value="Virement">Virement</label>
+        <label><input type="checkbox" name="pay" value="Mobile money (Orange Money, Wave…)">Mobile money</label>
+        <label><input type="checkbox" name="pay" value="Pas de paiement en ligne">Pas de paiement en ligne</label></div></div>
+
+      <div class="q" data-q="Outils à connecter"><p>Des outils déjà en place à connecter ?</p><div class="opts">
+        <label><input type="checkbox" name="out" value="Logiciel de comptabilité">Logiciel de comptabilité</label>
+        <label><input type="checkbox" name="out" value="Google Workspace / Gmail">Google Workspace / Gmail</label>
+        <label><input type="checkbox" name="out" value="WhatsApp Business">WhatsApp Business</label>
+        <label><input type="checkbox" name="out" value="Aucun">Aucun</label></div>
+        <input class="input" name="outil" placeholder="Lesquels ? (facultatif)"></div>
+
+      <div class="q" data-q="Langues"><p>Langues de l’application client</p><div class="opts">
+        <label><input type="checkbox" name="lang" value="Français" checked>Français</label>
+        <label><input type="checkbox" name="lang" value="Anglais">Anglais</label>
+        <label><input type="checkbox" name="lang" value="Autre">Autre</label></div></div>
+
+      <div class="q" data-q="Délai"><p>Pour quand souhaitez-vous une première version ?</p><div class="opts">
+        <label><input type="radio" name="del" value="Moins d’1 mois">Moins d’1 mois</label>
+        <label><input type="radio" name="del" value="1 à 3 mois">1 à 3 mois</label>
+        <label><input type="radio" name="del" value="3 à 6 mois">3 à 6 mois</label>
+        <label><input type="radio" name="del" value="Pas de date fixe">Pas de date fixe</label></div></div>
+
+      <div class="q" data-q="Remarque"><p>Quelque chose à ajouter ?</p><textarea class="input" name="rem" rows="3" placeholder="Facultatif"></textarea></div>
+    </form>
+  </section>
+
+  <section class="fin">
+    <button class="btn wa" id="envoyer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.8-2.7-1.1-4.4-3.9-4.5-4-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.7-.1 1.3z"/></svg>Envoyer mes réponses à Hatim</button>
+    <button class="btn gh" id="copier">Copier mes réponses</button>
+  </section>
+</main>
+<footer>Les Monsieurs by Monsieur.H · Hatim · 06 52 04 17 25</footer>
+<div class="avance"><div class="wrap"><span id="nb">0 / 13 réponses</span><div class="barre"><i id="bar"></i></div></div></div>
+
+<script>
+(function () {
+  'use strict';
+  const TEL = '33652041725', CLE = 'axis_cadrage_v1';
+  const f = document.getElementById('f');
+  document.getElementById('dt').textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  // Brouillon mémorisé sur cet appareil
+  try { const s = JSON.parse(localStorage.getItem(CLE) || 'null'); if (s) { f.querySelectorAll('input,textarea').forEach(el => { if (el.type === 'checkbox' || el.type === 'radio') el.checked = (s.c || []).includes(el.name + '=' + el.value); else if (s.t && el.name in s.t) el.value = s.t[el.name]; }); } } catch (e) { }
+  function sauver() { try { const c = [], t = {}; f.querySelectorAll('input,textarea').forEach(el => { if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) c.push(el.name + '=' + el.value); } else t[el.name] = el.value; }); localStorage.setItem(CLE, JSON.stringify({ c, t })); } catch (e) { } }
+  const QS = [...f.querySelectorAll('.q')].filter(q => q.dataset.q !== 'Remarque');
+  function reponses() {
+    return [...f.querySelectorAll('.q')].map(q => {
+      const v = [...q.querySelectorAll('input:checked')].map(i => i.value), txt = [...q.querySelectorAll('input.input,textarea')].map(i => i.value.trim()).filter(Boolean);
+      return { q: q.dataset.q, v: v.concat(txt) };
+    });
+  }
+  function maj() { const n = QS.filter(q => q.querySelector('input:checked') || [...q.querySelectorAll('.input')].some(i => i.value.trim())).length; document.getElementById('nb').textContent = n + ' / ' + QS.length + ' réponses'; document.getElementById('bar').style.width = (n / QS.length * 100) + '%'; }
+  f.addEventListener('change', () => { sauver(); maj(); }); f.addEventListener('input', () => { sauver(); maj(); }); maj();
+  function texte() { return 'Réponses Axis Import · cadrage du projet\n\n' + reponses().map(r => '• ' + r.q + ' : ' + (r.v.length ? r.v.join(', ') : '—')).join('\n'); }
+  function toast(t) { document.querySelectorAll('.toast').forEach(x => x.remove()); const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+  document.getElementById('envoyer').onclick = () => { location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(texte()); };
+  document.getElementById('copier').onclick = async () => { try { await navigator.clipboard.writeText(texte()); toast('Réponses copiées'); } catch (e) { const a = document.createElement('textarea'); a.value = texte(); document.body.appendChild(a); a.select(); try { document.execCommand('copy'); toast('Réponses copiées'); } catch (x) { } a.remove(); } };
+})();
+</script>
+</body>
+</html>
